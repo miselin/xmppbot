@@ -13,4 +13,4 @@ dependencies which saves a lot of time hunting down random .jar files.
 
 ## JDK/JRE Dependency
 
-This package depends on a JDK/JRE based on Java 8.
+This package depends on a JDK/JRE based on Java 7.
