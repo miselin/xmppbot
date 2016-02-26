@@ -10,6 +10,13 @@ dependencies which saves a lot of time hunting down random .jar files.
 
     $ mvn package
 	$ java -jar target/wfabot-1.0-1-jar-with-dependencies.jar
+	
+On Windows, you will need to install the latest JDK and Apache Maven.
+
+On Debian-based systems (including Ubuntu), you can run:
+
+    $ sudo apt-get install openjdk-7-jdk openjdk-7-jre apache-maven
+	$ sudo update-alternatives --config java  # Pick the 'java' from openjdk-7-jre
 
 ## JDK/JRE Dependency
 
