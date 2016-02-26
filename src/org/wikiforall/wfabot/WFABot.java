@@ -93,7 +93,7 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
       return null;
     }
 
-    MultiUserChat muc = multichatmanager_.getMultiUserChat(room);
+    final MultiUserChat muc = multichatmanager_.getMultiUserChat(room);
 
     // No history on join.
     DiscussionHistory history = new DiscussionHistory();
