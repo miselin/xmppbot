@@ -309,7 +309,6 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
     Properties props = b.getProperties(props_path);
 
     // Log in and immediately join the main multi-chat.
-    // b.login("wikiforall.net", "wikiforall.net", "skynet", "Q()@UN!%AO42L61CUF#(AAS23D");
     b.login(props.getProperty("hostname", "localhost"),
             props.getProperty("service", "wikiforall.net"),
             props.getProperty("username", "skynet"),
