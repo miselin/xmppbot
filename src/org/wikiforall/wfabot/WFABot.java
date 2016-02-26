@@ -71,7 +71,7 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
             .setResource("")
             .setSendPresence(true)
             .setDebuggerEnabled(false)
-            .setSecurityMode(ConnectionConfiguration.SecurityMode.required)
+            .setSecurityMode(ConnectionConfiguration.SecurityMode.ifpossible)
             .build();
 
     connection_ = new XMPPTCPConnection(config);
