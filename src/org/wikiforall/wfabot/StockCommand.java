@@ -43,12 +43,9 @@ public class StockCommand implements BaseCommand {
     }
 
     StringBuilder s = new StringBuilder("http://finance.yahoo.com/d/quotes.csv?s=");
-    tickers.stream().map((ticker) -> {
-      s.append(ticker);
-      return ticker;
-    }).forEach((_item) -> {
-      s.append("+");
-    });
+    for (String ticker : tickers) {
+      s.append(ticker).append("+");
+    }
     // ticker, name, ask, bid, previous close, open
     s.append("&f=snabpo");
 

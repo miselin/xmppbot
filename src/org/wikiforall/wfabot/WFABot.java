@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.MessageListener;
+import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat.Chat;
@@ -97,7 +99,12 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
     DiscussionHistory history = new DiscussionHistory();
     history.setMaxStanzas(0);
     muc.join(username_, "", history, connection_.getPacketReplyTimeout());
-    muc.addMessageListener(packet -> handleCommand(null, muc, (Message) packet));
+    muc.addMessageListener(new MessageListener() {
+      @Override
+      public void processMessage(Message message) {
+        handleCommand(null, muc, message);
+      }
+    });
     return muc;
   }
 
