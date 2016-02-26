@@ -2,10 +2,15 @@
 package org.wikiforall.wfabot;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -261,6 +266,31 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
     active_ = b;
   }
 
+  public Properties getProperties(String pathname) {
+    Properties props = new Properties();
+
+    if (null != pathname) {
+      InputStream input = null;
+      try {
+        // Load from the given file if we can.
+        input = new FileInputStream(pathname);
+      } catch (FileNotFoundException ex) {
+        // No dice.
+        System.err.println("Cannot open config path " + pathname);
+        return props;
+      }
+
+      // Load from the file.
+      try {
+        props.load(input);
+      } catch (IOException ex) {
+        System.err.println("Loading properties from " + pathname + " failed, using defaults.");
+      }
+    }
+
+    return props;
+  }
+
   public static void main(String[] args) throws Throwable {
     WFABot b = new WFABot();
 
@@ -271,8 +301,19 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
     commands_.add(new ShutdownCommand(b));
     commands_.add(new PingCommand());
 
+    // Load configuration.
+    String props_path = null;
+    if (args.length > 0) {
+      props_path = args[0];
+    }
+    Properties props = b.getProperties(props_path);
+
     // Log in and immediately join the main multi-chat.
-    b.login("wikiforall.net", "wikiforall.net", "skynet", "Q()@UN!%AO42L61CUF#(AAS23D");
+    // b.login("wikiforall.net", "wikiforall.net", "skynet", "Q()@UN!%AO42L61CUF#(AAS23D");
+    b.login(props.getProperty("hostname", "localhost"),
+            props.getProperty("service", "wikiforall.net"),
+            props.getProperty("username", "skynet"),
+            props.getProperty("password", "Q()@UN!%AO42L61CUF#(AAS23D"));
     MultiUserChat muc = b.joinRoom("general@multi.wikiforall.net");
 
     // Stay alive until we're asked to terminate.

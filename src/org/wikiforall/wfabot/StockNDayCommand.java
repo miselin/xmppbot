@@ -111,7 +111,6 @@ public class StockNDayCommand extends StockCommand {
       last_close = entry.close;
     }
 
-    //Collections.reverse(closes);
     String message = String.format("%d days of %s (low/high/close): ", days, tickers.get(0));
     for (int i = 0; i < closes.size(); i++) {
       message += closes.get(i);
