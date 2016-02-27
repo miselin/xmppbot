@@ -11,6 +11,16 @@ package org.wikiforall.wfabot;
 public class ForexCommand extends StockCommand {
 
   @Override
+  public String usage() {
+    return "ticker";
+  }
+
+  @Override
+  public String description() {
+    return "get a currency exchange quote for the given currency pair (e.g. USDAUD).";
+  }
+
+  @Override
   public String fixTicker(String ticker) {
     return ticker + "=X";
   }

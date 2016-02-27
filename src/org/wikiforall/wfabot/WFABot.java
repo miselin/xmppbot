@@ -158,7 +158,11 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
   public String[] getHelp() {
     List<String> entries = new ArrayList<>();
     for (BaseCommand cmd : commands_) {
-      entries.add(String.format("-> %s %s: %s", cmd.token(), cmd.usage(), cmd.description()));
+      String usage = cmd.usage();
+      if (!usage.isEmpty()) {
+        usage = " " + usage;
+      }
+      entries.add(String.format("-> !%s%s: %s", cmd.token(), usage, cmd.description()));
     }
     return entries.toArray(new String[entries.size()]);
   }
