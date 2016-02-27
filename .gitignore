@@ -1,0 +1,7 @@
+/dist/
+/target/
+/build/
+/nbproject/
+config.properties
+manifest.mf
+build.xml
