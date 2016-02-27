@@ -173,7 +173,7 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
   public String[] getResponses(String from, String body) {
     if (body.startsWith("!")) {
       String which = body.split(" ")[0];
-      if (which == "!help") {
+      if (which.equals("!help")) {
         return getHelp();
       }
 
