@@ -291,6 +291,7 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
     WFABot b = new WFABot();
 
     // Register known commands.
+    commands_.add(new PyDocCommand());
     commands_.add(new DiceCommand());
     commands_.add(new ForexCommand());
     commands_.add(new StockCommand());
