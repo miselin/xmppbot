@@ -13,6 +13,16 @@ import java.util.List;
  */
 public class StockNDayCommand extends StockCommand {
 
+  @Override
+  public String usage() {
+    return "ticker[*N]";
+  }
+
+  @Override
+  public String description() {
+    return "get N days worth of stock price data for the given ticker (N defaults to 5).";
+  }
+
   private class HistoricalData {
     public double high;
     public double low;

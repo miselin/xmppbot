@@ -16,6 +16,16 @@ public class ShutdownCommand implements BaseCommand {
   }
 
   @Override
+  public String usage() {
+    return "";
+  }
+
+  @Override
+  public String description() {
+    return "shut down the bot gracefully (only for admins).";
+  }
+
+  @Override
   public String token() {
     return "shutdown";
   }

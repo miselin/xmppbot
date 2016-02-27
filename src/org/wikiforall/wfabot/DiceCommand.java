@@ -21,6 +21,16 @@ public class DiceCommand implements BaseCommand {
   private static SecureRandom random_ = new SecureRandom();
   private static final Pattern mdn_re_ = Pattern.compile("(?<count>\\d+)??d(?<sides>\\d+)??");
 
+  @Override
+  public String usage() {
+    return "[MdN]+";
+  }
+
+  @Override
+  public String description() {
+    return "roll M N-sided dice; you may specify multiple MdNs; M and S are optional (default is 6 sides).";
+  }
+
   public class Dice {
 
     private final int sides_;

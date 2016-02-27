@@ -17,6 +17,16 @@ import java.util.logging.Logger;
 public class PyDocCommand implements BaseCommand {
 
   @Override
+  public String usage() {
+    return "[python-function]+";
+  }
+
+  @Override
+  public String description() {
+    return "retrieve function signature and first line of docstring for the given function(s) (e.g. json.dumps).";
+  }
+
+  @Override
   public String token() {
     return "pydoc";
   }

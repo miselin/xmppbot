@@ -152,6 +152,18 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
   }
 
   /**
+   * Handles the !help command (this is a special command).
+   * @return set of messages with usage instructions
+   */
+  public String[] getHelp() {
+    List<String> entries = new ArrayList<>();
+    for (BaseCommand cmd : commands_) {
+      entries.add(String.format("-> %s %s: %s", cmd.token(), cmd.usage(), cmd.description()));
+    }
+    return entries.toArray(new String[entries.size()]);
+  }
+
+  /**
    * Gets responses for the given message from the given person.
    *
    * @param from the person from which the message was sent
@@ -161,6 +173,10 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
   public String[] getResponses(String from, String body) {
     if (body.startsWith("!")) {
       String which = body.split(" ")[0];
+      if (which == "!help") {
+        return getHelp();
+      }
+
       for (BaseCommand cmd : commands_) {
         if (("!" + cmd.token()).equals(which)) {
           return cmd.handle(body, from);

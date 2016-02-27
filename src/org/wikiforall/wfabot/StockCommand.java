@@ -11,6 +11,16 @@ import java.util.List;
  */
 public class StockCommand implements BaseCommand {
 
+  @Override
+  public String usage() {
+    return "[ticker]+";
+  }
+
+  @Override
+  public String description() {
+    return "get a stock quote for the given ticker(s).";
+  }
+
   public String fixTicker(String ticker) {
     // Lock to ASX by default.
     if (!ticker.contains(".")) {

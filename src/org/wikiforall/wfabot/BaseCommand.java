@@ -16,6 +16,21 @@ public interface BaseCommand {
   public abstract String token();
 
   /**
+   * Get usage information (don't include the !token, only the parameters).
+   *
+   * @return Usage information.
+   */
+  public abstract String usage();
+
+  /**
+   * Get a short description of this command.
+   *
+   * @return Short description.
+   */
+  public abstract String description();
+
+
+  /**
    * Handle the given message, returning any messages to transmit back to the user.
    *
    * @param message The message to handle, including the command token itself.

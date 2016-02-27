@@ -12,6 +12,16 @@ import java.util.List;
 public class IsItUpCommand implements BaseCommand {
 
   @Override
+  public String usage() {
+    return "[url]+";
+  }
+
+  @Override
+  public String description() {
+    return "check if the given URL is up or not (multiple can be provided).";
+  }
+
+  @Override
   public String token() {
     return "isitup";
   }

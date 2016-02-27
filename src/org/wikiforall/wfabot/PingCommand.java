@@ -10,6 +10,16 @@ package org.wikiforall.wfabot;
 public class PingCommand implements BaseCommand {
 
   @Override
+  public String usage() {
+    return "";
+  }
+
+  @Override
+  public String description() {
+    return "request an echo response.";
+  }
+
+  @Override
   public String token() {
     return "ping";
   }
