@@ -16,7 +16,19 @@ def main():
     mod = None
     obj = getattr(__builtins__, target)
 
-  print '%s%s' % (target, str(signature(obj)))
+  doc = ''
+  doc_ = obj.__doc__
+  if doc_ is None:
+    try:
+      doc_ = obj.__init__.__doc__
+    except NameError:
+      try:
+        doc_ = obj.__call__.__doc__
+      except NameError:
+        doc_ = None
+  if doc_ is not None:
+    doc = ' - %s' % (doc_.splitlines()[0],)
+  print '%s%s%s' % (target, str(signature(obj)).strip(), doc)
 
 
 if __name__ == '__main__':
