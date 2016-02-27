@@ -5,16 +5,24 @@ import sys
 from funcsigs import signature
 
 
+def getfrom(mod, name):
+  try:
+    return getattr(mod, name)
+  except AttributeError:
+    return mod.__dict__[name]
+
+
 def main():
   target = sys.argv[1]
   if '.' in target:
     comps = target.split('.')
-    mod = '.'.join(comps[:-1])
-    mod = __import__(mod)
-    obj = getattr(mod, comps[-1])
+    mod_name = '.'.join(comps[:-1])
+    mod = __import__(mod_name)
+    mod = sys.modules[mod_name]
+    obj = getfrom(mod, comps[-1])
   else:
     mod = None
-    obj = getattr(__builtins__, target)
+    obj = getfrom(__builtins__, target)
 
   doc = ''
   doc_ = obj.__doc__
