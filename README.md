@@ -18,6 +18,12 @@ On Debian-based systems (including Ubuntu), you can run:
     $ sudo apt-get install openjdk-7-jdk openjdk-7-jre apache-maven
 	$ sudo update-alternatives --config java  # Pick the 'java' from openjdk-7-jre
 
+## Deployment
+
+Commits pushed to this repository will be automatically pulled and built. If the new JAR is
+different to the running one, the bot will be restarted automatically. This happens every 5
+minutes.
+
 ## JDK/JRE Dependency
 
 This package depends on a JDK/JRE based on Java 7.
