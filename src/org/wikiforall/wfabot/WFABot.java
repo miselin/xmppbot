@@ -1,13 +1,10 @@
 
 package org.wikiforall.wfabot;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -15,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.MessageListener;
-import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat.Chat;
@@ -43,7 +39,7 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
   private boolean active_ = false;
   private String username_ = null;
   private String jid_ = null;
-  private static List<BaseCommand> commands_ = new ArrayList<>();
+  private static final List<BaseCommand> commands_ = new ArrayList<>();
 
   /**
    * Connect and log in to the given XMPP host on port 5222.
