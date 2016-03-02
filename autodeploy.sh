@@ -7,7 +7,7 @@ reslog=$(git log HEAD..origin/master --oneline)
 if [[ "${reslog}" != "" ]] ; then
   git pull
 
-  mvn package
+  mvn clean verify
   NEW=$(sha256sum target/wfabot-1.0-1-jar-with-dependencies.jar)
 
   if [[ "$ORIG" != "$NEW" ]]; then
