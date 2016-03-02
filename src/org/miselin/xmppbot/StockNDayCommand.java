@@ -1,6 +1,7 @@
 
 package org.miselin.xmppbot;
 
+import org.miselin.xmppbot.util.Downloader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
