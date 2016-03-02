@@ -331,7 +331,7 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
     b.login(props.getProperty("hostname", "localhost"),
             props.getProperty("service", "wikiforall.net"),
             props.getProperty("username", "skynet"),
-            props.getProperty("password", "Q()@UN!%AO42L61CUF#(AAS23D"));
+            props.getProperty("password", ""));
     MultiUserChat muc = b.joinRoom("general@multi.wikiforall.net");
 
     // Stay alive until we're asked to terminate.
