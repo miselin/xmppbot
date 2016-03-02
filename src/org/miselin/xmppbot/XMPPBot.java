@@ -1,5 +1,5 @@
 
-package org.wikiforall.wfabot;
+package org.miselin.xmppbot;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,7 +31,7 @@ import org.jxmpp.util.XmppStringUtils;
  *
  * @author Matthew Iselin <matthew@theiselins.net>
  */
-public class WFABot implements ChatMessageListener, ChatManagerListener {
+public class XMPPBot implements ChatMessageListener, ChatManagerListener {
 
   private XMPPTCPConnection connection_ = null;
   private ChatManager chatmanager_ = null;
@@ -218,7 +218,7 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
               chat.sendMessage(response);
             }
           } catch (SmackException.NotConnectedException ex) {
-            Logger.getLogger(WFABot.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(XMPPBot.class.getName()).log(Level.SEVERE, null, ex);
           }
         }
       }
@@ -232,7 +232,7 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
             muc.sendMessage(from + ": " + response);
           }
         } catch (SmackException.NotConnectedException ex) {
-          Logger.getLogger(WFABot.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(XMPPBot.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
     }
@@ -308,7 +308,7 @@ public class WFABot implements ChatMessageListener, ChatManagerListener {
   }
 
   public static void main(String[] args) throws Throwable {
-    WFABot b = new WFABot();
+    XMPPBot b = new XMPPBot();
 
     // Register known commands.
     commands_.add(new IsItUpCommand());

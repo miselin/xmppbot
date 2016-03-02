@@ -1,5 +1,5 @@
 
-package org.wikiforall.wfabot;
+package org.miselin.xmppbot;
 
 /**
  * PingCommand simply sends a pong to the requesting user. Useful for basic verification that the

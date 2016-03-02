@@ -1,6 +1,7 @@
 
-package org.wikiforall.wfabot;
+package org.miselin.xmppbot;
 
+import org.miselin.xmppbot.PingCommand;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

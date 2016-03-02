@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.wikiforall.wfabot;
+package org.miselin.xmppbot;
 
+import org.miselin.xmppbot.DiceCommand;
 import java.security.SecureRandom;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.mockito.Mockito;
-import org.wikiforall.wfabot.DiceCommand.Dice;
+import org.miselin.xmppbot.DiceCommand.Dice;
 
 /**
  *

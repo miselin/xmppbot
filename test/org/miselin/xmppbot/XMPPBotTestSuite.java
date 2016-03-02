@@ -1,5 +1,5 @@
 
-package org.wikiforall.wfabot;
+package org.miselin.xmppbot;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -10,7 +10,7 @@ import org.junit.runners.Suite;
  * @author Matthew Iselin <matthew@theiselins.net>
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({org.wikiforall.wfabot.PingCommandTest.class})
-public class WFABotTestSuite {
+@Suite.SuiteClasses({org.miselin.xmppbot.PingCommandTest.class})
+public class XMPPBotTestSuite {
 
 }

@@ -1,5 +1,5 @@
 
-package org.wikiforall.wfabot;
+package org.miselin.xmppbot;
 
 /**
  * ForexCommand provides a way of getting currency conversions quickly and easily.

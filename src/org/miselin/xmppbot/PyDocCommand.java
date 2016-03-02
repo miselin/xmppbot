@@ -1,5 +1,5 @@
 
-package org.wikiforall.wfabot;
+package org.miselin.xmppbot;
 
 import java.io.BufferedReader;
 import java.io.IOException;

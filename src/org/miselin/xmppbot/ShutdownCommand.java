@@ -1,17 +1,17 @@
 
-package org.wikiforall.wfabot;
+package org.miselin.xmppbot;
 
 /**
- * ShutdownCommand is an unusual command in that it accesses the main WFABot instance. The command
+ * ShutdownCommand is an unusual command in that it accesses the main XMPPBot instance. The command
  * shuts down the bot cleanly.
  *
  * @author Matthew Iselin <matthew@theiselins.net>
  */
 public class ShutdownCommand implements BaseCommand {
 
-  private WFABot bot_ = null;
+  private XMPPBot bot_ = null;
 
-  public ShutdownCommand(WFABot bot) {
+  public ShutdownCommand(XMPPBot bot) {
     bot_ = bot;
   }
 

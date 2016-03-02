@@ -2,18 +2,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.wikiforall.wfabot</groupId>
-	<artifactId>wfabot</artifactId>
+	<groupId>org.miselin.xmppbot</groupId>
+	<artifactId>xmppbot</artifactId>
 	<version>1.0-1</version>
 	
-    <name>WikiForAll Jabber Bot</name>
-    <description>The "skynet" bot for the WikiForAll Jabber server.</description>
-    <url>https://bitbucket.org/miselin/wfa-skynet</url>
+    <name>XMPP Bot</name>
+    <description>An XMPP bot that provides a variety of useful functions, particularly in the context of multi-user chats.</description>
+    <url>https://github.com/miselin/xmppbot</url>
 
 	<scm>
-		<url>https://bitbucket.org/miselin/wfa-skynet</url>
-		<connection>scm:git:git://bitbucket.org/miselin/wfa-skynet.git</connection>
+		<url>https://github.com/miselin/xmppbot</url>
+		<connection>scm:git:git://github.com/miselin/xmppbot.git</connection>
 	</scm>
+
+    <issueManagement>
+        <url>https://github.com/miselin/xmppbot/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
 
 	<dependencies>
 		<dependency>
@@ -83,7 +88,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>org.wikiforall.wfabot.WFABot</mainClass>
+							<mainClass>org.miselin.xmppbot.XMPPBot</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -96,7 +101,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>org.wikiforall.wfabot.WFABot</mainClass>
+							<mainClass>org.miselin.xmppbot.XMPPBot</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

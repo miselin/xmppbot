@@ -12,7 +12,7 @@ Apache Maven is used to build; it isn't too complex to set up, and it automatica
 dependencies which saves a lot of time hunting down random .jar files.
 
     $ mvn package
-	$ java -jar target/wfabot-1.0-1-jar-with-dependencies.jar
+	$ java -jar target/xmppbot-1.0-1-jar-with-dependencies.jar
 
 On Windows, you will need to install the latest JDK and Apache Maven.
 

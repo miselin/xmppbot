@@ -1,5 +1,5 @@
 
-package org.wikiforall.wfabot;
+package org.miselin.xmppbot;
 
 /**
  * BaseCommand defines the standard interface for all commands that the bot can action.
