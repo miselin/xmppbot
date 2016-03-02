@@ -1,7 +1,10 @@
-# WikiForAll Jabber Bot
+# XMPP Bot
 
-This repository contains the source for the jabber bot "skynet" which lives on the WikiForAll
-Jabber server.
+[![Build Status](https://travis-ci.org/miselin/xmppbot.svg?branch=master)](https://travis-ci.org/miselin/xmppbot)
+
+This repository contains the source for an XMPP bot which can connect to an XMPP server
+and present useful features to members. In particular, the bot aims to add value to
+multi-user chats.
 
 ## Building & Running
 
@@ -28,20 +31,11 @@ To run the full test suite, just run:
 
 ## Deployment
 
+At least one instance of the bot is using the `autodeploy.sh` script.
+
 Commits pushed to this repository will be automatically pulled and built. If the new JAR is
-different to the running one, the bot will be restarted automatically. This happens every 5
-minutes.
+different to the running one, the bot will be restarted automatically.
 
 ## JDK/JRE Dependency
 
-This package depends on a JDK/JRE based on Java 7.
-
-## Certificates
-
-The wikiforall.net Jabber server uses a certificate from Let's Encrypt. You will need to use
-a tool like [Portecle](https://sourceforge.net/projects/portecle/files/latest/download) to
-manage the `$JAVA_HOME/lib/security/cacerts` file (it is worth doing so for both the JDK
-and the JRE cacerts path).
-
-The three certificates, in `.pem` format, at https://letsencrypt.org/certificates/ should be
-installed as trusted CAs. This will allow the bot to connect using TLS without error.
+This package depends on a JDK/JRE based on Java 7 or above.
