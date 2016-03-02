@@ -13,6 +13,6 @@ if [[ "${reslog}" != "" ]] ; then
   if [[ "$ORIG" != "$NEW" ]]; then
     # restart daemon
     screen -XS wfabot quit || echo "doesn't exist yet"
-    screen -dmS wfabot java -jar $PWD/target/wfabot-1.0-1-jar-with-dependencies.jar
+    screen -dmS wfabot java -jar $PWD/target/wfabot-1.0-1-jar-with-dependencies.jar $PWD/config.properties
   fi
 fi
