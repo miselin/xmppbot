@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.MessageListener;
+import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat.Chat;
@@ -73,6 +74,10 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
     connection_ = new XMPPTCPConnection(config);
     connection_.connect();
     connection_.login();
+
+    // Add automatic reconnection (if the remote goes away for some reason).
+    ReconnectionManager manager = ReconnectionManager.getInstanceFor(connection_);
+    manager.enableAutomaticReconnection();
 
     jid_ = XmppStringUtils.parseBareJid(connection_.getUser());
 
