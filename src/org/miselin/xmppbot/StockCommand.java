@@ -1,9 +1,13 @@
 
 package org.miselin.xmppbot;
 
+import java.io.IOException;
 import org.miselin.xmppbot.util.Downloader;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 /**
  * StockCommand provides a command to retrieve a stock quote for one or more stocks.
@@ -60,28 +64,24 @@ public class StockCommand implements BaseCommand {
     // ticker, name, ask, bid, previous close, open
     s.append("&f=snabpo");
 
-    System.out.println("built URL: " + s.toString());
-
     List<String> messages = new ArrayList<>();
 
     String csv = Downloader.download(s.toString());
-    String[] lines = csv.split("\n");
-    for (String line : lines) {
-      line = line.trim().replace("\"", "");
-      if (line.isEmpty()) {
-        continue;
-      }
 
-      String[] fields = line.split(",");
+    CSVParser parser;
+    try {
+      parser = CSVParser.parse(csv, CSVFormat.RFC4180);
+    } catch (IOException ex) {
+      return new String[]{"Yahoo Finance gave a malformed response."};
+    }
 
-      System.out.println(line);
-
-      String ticker = fields[0];
-      String name = fields[1];
-      double ask = Double.parseDouble(fields[2]);
-      double bid = Double.parseDouble(fields[3]);
-      double close = Double.parseDouble(fields[4]);
-      double open = Double.parseDouble(fields[5]);
+    for (CSVRecord record : parser) {
+      String ticker = record.get(0);
+      String name = record.get(1);
+      double ask = Double.parseDouble(record.get(2));
+      double bid = Double.parseDouble(record.get(3));
+      double close = Double.parseDouble(record.get(4));
+      double open = Double.parseDouble(record.get(5));
 
       messages.add(String.format("%s (%s) ask %.3f bid %.3f open %.3f close %.3f",
               ticker, name, ask, bid, close, open));
