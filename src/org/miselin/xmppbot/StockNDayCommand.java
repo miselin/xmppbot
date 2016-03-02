@@ -1,11 +1,14 @@
 
 package org.miselin.xmppbot;
 
+import java.io.IOException;
 import org.miselin.xmppbot.util.Downloader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 /**
  * StockNDayCommand provides a way of getting historical data for a single stock.
@@ -69,41 +72,32 @@ public class StockNDayCommand extends StockCommand {
     List<HistoricalData> history = new ArrayList<>();
 
     String csv = Downloader.download(s);
-    List<String> lines = Arrays.asList(csv.split("\n"));
-    Double last_close = null;
-    for (String line : lines) {
-      // Remove quotes, company names and symbols won't have commas (maybe).
-      line = line.trim().replace("\"", "");
-      if (line.isEmpty()) {
-        continue;
-      }
 
-      // Terrible hack
-      if (line.startsWith("Date")) {
-        continue;
-      }
+    CSVParser parser;
+    try {
+      parser = CSVParser.parse(csv, CSVFormat.RFC4180.withNullString("N/A").withHeader());
+    } catch (IOException ex) {
+      return new String[]{"Yahoo Finance gave a malformed response."};
+    }
 
-      String[] fields = line.split(",");
-      if (fields.length < 5) {
-        continue;
+    for (CSVRecord record : parser) {
+      if (record.getRecordNumber() > days) {
+        break;
       }
 
       // Only care about its close price.
       HistoricalData hist = new HistoricalData();
-      hist.high = Double.parseDouble(fields[2]);
-      hist.low = Double.parseDouble(fields[3]);
-      hist.close = Double.parseDouble(fields[4]);
+      hist.high = Double.parseDouble(record.get("High"));
+      hist.low = Double.parseDouble(record.get("Low"));
+      hist.close = Double.parseDouble(record.get("Close"));
       history.add(hist);
-
-      if (history.size() >= days) {
-        break;
-      }
     }
 
     // Rearrange so we present from the oldest data to the newest.
     Collections.reverse(history);
 
     // Stringify each data point.
+    Double last_close = null;
     for (HistoricalData entry : history) {
       String arrow;
       if (last_close != null) {

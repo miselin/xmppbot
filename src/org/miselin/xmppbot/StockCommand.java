@@ -70,7 +70,7 @@ public class StockCommand implements BaseCommand {
 
     CSVParser parser;
     try {
-      parser = CSVParser.parse(csv, CSVFormat.RFC4180);
+      parser = CSVParser.parse(csv, CSVFormat.RFC4180.withNullString("N/A"));
     } catch (IOException ex) {
       return new String[]{"Yahoo Finance gave a malformed response."};
     }
