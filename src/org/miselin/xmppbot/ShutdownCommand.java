@@ -17,7 +17,7 @@ public class ShutdownCommand implements BaseCommand {
 
   @Override
   public String usage() {
-    return "";
+    return "shutdown [botname]";
   }
 
   @Override
@@ -32,6 +32,11 @@ public class ShutdownCommand implements BaseCommand {
 
   @Override
   public String[] handle(String message, String from) {
+    String[] message_split = message.split(" ");
+    if (message_split.length > 1 && !bot_.getUsername().equals(message_split[1])){
+      // Not for us
+      return new String[]{"NOTHING TO DO HERE"};
+    }
     String response;
     if (bot_.isAdminUser(from)) {
       bot_.setActive(false);

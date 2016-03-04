@@ -196,6 +196,10 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
     return new String[]{};
   }
 
+  public String getUsername() {
+    return username_;
+  }
+
   /**
    * Handles a command on a private chat or on a multi-user chat.
    *
