@@ -324,6 +324,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
     commands_.add(new StockNDayCommand());
     commands_.add(new ShutdownCommand(b));
     commands_.add(new PingCommand());
+    commands_.add(new WatchlistCommand());
 
     // Load configuration.
     String props_path = null;
