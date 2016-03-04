@@ -1,7 +1,8 @@
 
 package org.miselin.xmppbot.util;
 
-import org.mapdb.BTreeMap;
+import java.io.File;
+import java.util.concurrent.ConcurrentNavigableMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 
@@ -15,16 +16,7 @@ import org.mapdb.DBMaker;
 public class PersistentStorage {
 
   private static DB db_ = null;
-  private static BTreeMap<String, Object> map_ = null;
-
-  @Override
-  public void finalize() throws Throwable {
-    if (null != db_) {
-      db_.commit();
-      db_.close();
-    }
-    super.finalize();
-  }
+  private static ConcurrentNavigableMap<String, Object> map_ = null;
 
   public static void initialize(boolean ondisk) {
     if (null != db_) {
@@ -32,12 +24,16 @@ public class PersistentStorage {
     }
 
     if (ondisk) {
-      db_ = DBMaker.fileDB("local.db").make();
+      db_ = DBMaker.fileDB(new File("local.db"))
+              .closeOnJvmShutdown()
+              .cacheLRUEnable()
+              .cacheExecutorEnable()
+              .make();
     } else {
       db_ = DBMaker.heapDB().make();
     }
     // TODO(miselin): could use these collections to support namespaces...
-    map_ = (BTreeMap<String, Object>) db_.treeMap("xmppbot").create();
+    map_ = db_.treeMapCreate("xmppbot").makeOrGet();
   }
 
   /**
@@ -75,6 +71,7 @@ public class PersistentStorage {
     } else {
       map_.put(key, obj);
     }
+    db_.commit();
   }
 
   /**
