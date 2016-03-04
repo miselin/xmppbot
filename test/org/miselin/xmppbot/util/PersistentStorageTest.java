@@ -3,6 +3,7 @@ package org.miselin.xmppbot.util;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 
 /**
  * Tests for the persistent storage utility.
@@ -11,17 +12,21 @@ import static org.junit.Assert.*;
  */
 public class PersistentStorageTest {
 
+  @Before
+  public void beforeTest() {
+    PersistentStorage.shutdown();
+  }
+
   /**
    * Test of get method, of class PersistentStorage.
    */
   @Test
   public void testGet() {
-    PersistentStorage instance = new PersistentStorage();
-    instance.initialize(false);
+    PersistentStorage.initialize(false);
 
-    assertEquals("get() for a key that doesn't exist returns null", instance.get("foo"), null);
-    instance.set("foo", this);
-    assertEquals("get() for an existing key returns the value", instance.get("foo"), this);
+    assertEquals("get() for a key that doesn't exist returns null", PersistentStorage.get("foo"), null);
+    PersistentStorage.set("foo", this);
+    assertEquals("get() for an existing key returns the value", PersistentStorage.get("foo"), this);
   }
 
   /**
@@ -29,14 +34,13 @@ public class PersistentStorageTest {
    */
   @Test
   public void testSet() {
-    PersistentStorage instance = new PersistentStorage();
-    instance.initialize(false);
+    PersistentStorage.initialize(false);
 
-    instance.set("foo", "bar");
-    instance.set("foo", "baz");
-    assertEquals(instance.get("foo"), "baz");
-    instance.set("foo", null);
-    assertFalse(instance.exists("foo"));
+    PersistentStorage.set("foo", "bar");
+    PersistentStorage.set("foo", "baz");
+    assertEquals(PersistentStorage.get("foo"), "baz");
+    PersistentStorage.set("foo", null);
+    assertFalse(PersistentStorage.exists("foo"));
   }
 
   /**
@@ -44,12 +48,11 @@ public class PersistentStorageTest {
    */
   @Test
   public void testExists() {
-    PersistentStorage instance = new PersistentStorage();
-    instance.initialize(false);
+    PersistentStorage.initialize(false);
 
-    assertFalse(instance.exists("foo"));
-    instance.set("foo", "bar");
-    assertTrue(instance.exists("foo"));
+    assertFalse(PersistentStorage.exists("foo"));
+    PersistentStorage.set("foo", "bar");
+    assertTrue(PersistentStorage.exists("foo"));
   }
 
 }

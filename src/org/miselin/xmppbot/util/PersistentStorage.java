@@ -26,7 +26,7 @@ public class PersistentStorage {
     super.finalize();
   }
 
-  public void initialize(boolean ondisk) {
+  public static void initialize(boolean ondisk) {
     if (null != db_) {
       return;
     }
@@ -41,12 +41,23 @@ public class PersistentStorage {
   }
 
   /**
+   * Shut down the database. It will be re-initialized on the next get/set/exists operation.
+   */
+  public static void shutdown() {
+    if (null != db_) {
+      db_.commit();
+      db_.close();
+      db_ = null;
+    }
+  }
+
+  /**
    * Get the value for the given key, or null if not found.
    *
    * @param key the key to look up
    * @return the value (cast to your desired type), or null if not found
    */
-  public Object get(String key) {
+  public static Object get(String key) {
     initialize(true);
     return map_.get(key);
   }
@@ -57,7 +68,7 @@ public class PersistentStorage {
    * @param key the key to set a value for
    * @param obj the value to set
    */
-  public void set(String key, Object obj) {
+  public static void set(String key, Object obj) {
     initialize(true);
     if (null == obj) {
       map_.remove(key);
@@ -72,7 +83,7 @@ public class PersistentStorage {
    * @param key the key to check
    * @return true if the key exists, false otherwise
    */
-  public boolean exists(String key) {
+  public static boolean exists(String key) {
     initialize(true);
     return map_.containsKey(key);
   }
