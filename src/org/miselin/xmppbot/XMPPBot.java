@@ -41,6 +41,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
   private String username_ = null;
   private String jid_ = null;
   private static final List<BaseCommand> commands_ = new ArrayList<>();
+  private static final Logger log = Logger.getLogger("XMPPBot");
 
   /**
    * Connect and log in to the given XMPP host on port 5222.
@@ -55,7 +56,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
    */
   private void login(String hostname, String service, String username, String password) throws SmackException, IOException, XMPPException {
     if (null != connection_) {
-      System.err.println("Already connected!");
+      log.warning("already connected, ignoring login() call");
       return;
     }
 
@@ -85,6 +86,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
     multichatmanager_ = MultiUserChatManager.getInstanceFor(connection_);
     chatmanager_.addChatListener(this);
 
+    log.info(String.format("logged onto %s as %s", hostname, username));
     active_ = true;
   }
 
@@ -96,6 +98,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
    */
   private MultiUserChat joinRoom(String room) throws SmackException.NoResponseException, XMPPException.XMPPErrorException, SmackException.NotConnectedException {
     if (!isActive()) {
+      log.warning(String.format("not joining chat %s, not active", room));
       return null;
     }
 
@@ -111,6 +114,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
         handleCommand(null, muc, message);
       }
     });
+    log.info(String.format("joined room %s", room));
     return muc;
   }
 
@@ -119,6 +123,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
    */
   public void disconnect() {
     if (!isActive()) {
+      log.info("disconnect() called when already inactive");
       return;
     }
 
@@ -134,7 +139,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
    * @return true if the user is an admin, false otherwise.
    */
   public boolean isAdminUser(String username) {
-    System.err.println("isAdminUser(" + username + ")");
+    log.fine(String.format("isAdminUser(%s)", username));
     switch (username) {
       case "miselin":
       case "shadylives":
@@ -151,6 +156,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
    * @return true if the user is an admin, false otherwise.
    */
   public boolean isAdmin(String jid) {
+    log.fine(String.format("isAdmin(%s)", jid));
     String resource = XmppStringUtils.parseResource(jid);
     String localpart = XmppStringUtils.parseLocalpart(jid);
     return isAdminUser(resource) || isAdminUser(localpart);
@@ -183,11 +189,14 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
     if (body.startsWith("!")) {
       String which = body.split(" ")[0];
       if (which.equals("!help")) {
+        log.fine("short-circuited by !help");
         return getHelp();
       }
 
       for (BaseCommand cmd : commands_) {
+        log.finest(String.format("check %s against %s", which, cmd.token()));
         if (("!" + cmd.token()).equals(which)) {
+          log.fine(String.format("body '%s' being handled by %s", body, cmd.getClass().getName()));
           return cmd.handle(body, from);
         }
       }
@@ -209,10 +218,12 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
    */
   public void handleCommand(Chat chat, MultiUserChat muc, Message incoming) {
     if (!isActive()) {
+      log.warning("attempting to handle command while inactive");
       return;
     }
 
     if (null == incoming.getBody()) {
+      log.finest("null body on incoming message");
       return;
     }
 
@@ -269,6 +280,7 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
   public void chatCreated(Chat chat, boolean createdLocally) {
     // Make sure we handle all messages in this chat.
     if (!createdLocally) {
+      log.info(String.format("new chat created with us, participant %s", chat.getParticipant()));
       chat.addMessageListener(this);
     }
   }
@@ -295,13 +307,13 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
     Properties props = new Properties();
 
     if (null != pathname) {
-      InputStream input = null;
+      InputStream input;
       try {
         // Load from the given file if we can.
         input = new FileInputStream(pathname);
       } catch (FileNotFoundException ex) {
         // No dice.
-        System.err.println("Cannot open config path " + pathname);
+        log.severe(String.format("cannot open configuration path %s, using defaults", pathname));
         return props;
       }
 
@@ -309,15 +321,15 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
       try {
         props.load(input);
       } catch (IOException ex) {
-        System.err.println("Loading properties from " + pathname + " failed, using defaults.");
+        log.severe(String.format("loading from configuration path %s, using defaults", pathname));
       }
     }
 
     return props;
   }
 
-  public static void main(String[] args) throws Throwable {
-    XMPPBot b = new XMPPBot();
+  public static void registerCommands(XMPPBot b) {
+    commands_.clear();
 
     // Register known commands.
     commands_.add(new IsItUpCommand());
@@ -329,6 +341,11 @@ public class XMPPBot implements ChatMessageListener, ChatManagerListener {
     commands_.add(new ShutdownCommand(b));
     commands_.add(new PingCommand());
     commands_.add(new WatchlistCommand());
+  }
+
+  public static void main(String[] args) throws Throwable {
+    XMPPBot b = new XMPPBot();
+    registerCommands(b);
 
     // Load configuration.
     String props_path = null;

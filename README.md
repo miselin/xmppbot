@@ -21,6 +21,23 @@ On Debian-based systems (including Ubuntu), you can run:
     $ sudo apt-get install openjdk-7-jdk openjdk-7-jre apache-maven
 	$ sudo update-alternatives --config java  # Pick the 'java' from openjdk-7-jre
 
+## Configuration
+
+The `config.properties.example` file provides an example for configuring the bot. To use
+a properties file to adjust the behaviour of the bot, pass it as the first argument to the
+invocation:
+
+    $ java -jar xmppbot.jar config.properties
+	
+`logging.properties` can also be used to manage the logging configuration; its usage is
+straightforward:
+
+    $ java -jar xmppbot.jar -Djava.util.logging.config.file="logging.properties"
+	
+The default `logging.properties` file enables logging at the `FINEST` level to ease
+debugging. If a logging properties file is not specified, the default log level is used
+(typically, `INFO`).
+
 ## Running Tests
 
 A test suite is available and can be used to verify the behavior of commands hasn't changed.
