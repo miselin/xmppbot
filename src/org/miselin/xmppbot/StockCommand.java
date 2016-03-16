@@ -84,7 +84,7 @@ public class StockCommand implements BaseCommand {
       double open = Double.parseDouble(record.get(5));
 
       messages.add(String.format("%s (%s) ask %.3f bid %.3f open %.3f close %.3f",
-              ticker, name, ask, bid, close, open));
+                ticker, name, ask, bid, open, close));
     }
 
     return messages.toArray(new String[messages.size()]);
