@@ -126,7 +126,7 @@ public class StockCommand implements BaseCommand {
 
     for (StockQuote sq : quotes) {
       messages.add(String.format("%s (%s) ask %.3f bid %.3f open %.3f close %.3f",
-              sq.ticker, sq.name, sq.ask, sq.bid, sq.close, sq.open));
+              sq.ticker, sq.name, sq.ask, sq.bid, sq.open, sq.close));
     }
 
     return messages.toArray(new String[messages.size()]);
