@@ -24,6 +24,7 @@ public class StockCommand implements BaseCommand {
     public double bid;
     public double close;
     public double open;
+    public double lasttrade;
   }
 
   /**
@@ -40,6 +41,7 @@ public class StockCommand implements BaseCommand {
     quote.bid = Double.parseDouble(record.get(3));
     quote.close = Double.parseDouble(record.get(4));
     quote.open = Double.parseDouble(record.get(5));
+    quote.lasttrade = Double.parseDouble(record.get(6));
     return quote;
   }
 
@@ -71,7 +73,7 @@ public class StockCommand implements BaseCommand {
       s.append(ticker).append("+");
     }
     // ticker, name, ask, bid, previous close, open
-    s.append("&f=snabpo");
+    s.append("&f=snabpol1");
 
     List<String> messages = new ArrayList<>();
 

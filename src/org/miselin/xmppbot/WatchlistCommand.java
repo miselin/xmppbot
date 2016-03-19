@@ -4,6 +4,7 @@ package org.miselin.xmppbot;
 import java.util.ArrayList;
 import java.util.List;
 import org.miselin.xmppbot.util.PersistentStorage;
+import org.miselin.xmppbot.util.StringUtils;
 
 /**
  * Provides a mechanism for getting a set of stock quotes for a user's watchlist.
@@ -35,9 +36,11 @@ public class WatchlistCommand implements BaseCommand {
     }
 
     List<StockCommand.StockQuote> quotes = cmd.getQuotes(tickers);
-    String message = String.format("tickers for %s (ticker, close):", forwho);
+    String message = String.format("your watchlist (ticker, last close, last trade):");
     for (StockCommand.StockQuote quote : quotes) {
-      message += String.format(" %s %.3f", quote.ticker, quote.close);
+      message += String.format(" %s %.3f/%.3f/%s",
+              quote.ticker, quote.close, quote.lasttrade,
+              StringUtils.arrow(quote.close, quote.lasttrade));
     }
     return new String[]{message};
   }
