@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.miselin.xmppbot.util.StringUtils;
 
 /**
  * StockNDayCommand provides a way of getting historical data for a single stock.
@@ -101,13 +102,7 @@ public class StockNDayCommand extends StockCommand {
     for (HistoricalData entry : history) {
       String arrow;
       if (last_close != null) {
-        if (entry.close > last_close) {
-          arrow = " ↑";
-        } else if (entry.close == last_close) {
-          arrow = " =";
-        } else {
-          arrow = " ↓";
-        }
+        arrow = StringUtils.arrow(entry.close, last_close);
       } else {
         arrow = "";
       }
