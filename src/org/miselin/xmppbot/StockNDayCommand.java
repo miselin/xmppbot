@@ -102,7 +102,7 @@ public class StockNDayCommand extends StockCommand {
     for (HistoricalData entry : history) {
       String arrow;
       if (last_close != null) {
-        arrow = StringUtils.arrow(entry.close, last_close);
+        arrow = StringUtils.arrow(last_close, entry.close);
       } else {
         arrow = "";
       }
