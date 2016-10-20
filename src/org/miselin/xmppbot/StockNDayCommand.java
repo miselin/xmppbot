@@ -67,54 +67,57 @@ public class StockNDayCommand extends StockCommand {
       return new String[]{"no tickers were given (usage: '!stocknday CODE[*days]' - defaults to 5 days)"};
     }
 
-    String s = "http://ichart.finance.yahoo.com/table.csv?s=" + tickers.get(0);
-
-    List<String> closes = new ArrayList<>();
-    List<HistoricalData> history = new ArrayList<>();
-
-    String csv = Downloader.download(s);
-
-    CSVParser parser;
-    try {
-      parser = CSVParser.parse(csv, CSVFormat.RFC4180.withNullString("N/A").withHeader());
-    } catch (IOException ex) {
-      return new String[]{"Yahoo Finance gave a malformed response."};
-    }
-
-    for (CSVRecord record : parser) {
-      if (record.getRecordNumber() > days) {
-        break;
-      }
-
-      // Only care about its close price.
-      HistoricalData hist = new HistoricalData();
-      hist.high = Double.parseDouble(record.get("High"));
-      hist.low = Double.parseDouble(record.get("Low"));
-      hist.close = Double.parseDouble(record.get("Close"));
-      history.add(hist);
-    }
-
-    // Rearrange so we present from the oldest data to the newest.
-    Collections.reverse(history);
-
-    // Stringify each data point.
-    Double last_close = null;
-    for (HistoricalData entry : history) {
-      String arrow;
-      if (last_close != null) {
-        arrow = StringUtils.arrow(last_close, entry.close);
-      } else {
-        arrow = "";
-      }
-      closes.add(String.format("%.3f %.3f %.3f%s", entry.low, entry.high, entry.close, arrow));
-
-      last_close = entry.close;
-    }
-
     List<String> messages = new ArrayList<>();
-    messages.add(String.format("%d days of %s (low/high/close), oldest first:", days, tickers.get(0)));
-    for (int i = 0; i < closes.size(); i++) {
-      messages.add(closes.get(i));
+
+    for (String ticker : tickers) {
+      String s = "http://ichart.finance.yahoo.com/table.csv?s=" + ticker;
+
+      List<String> closes = new ArrayList<>();
+      List<HistoricalData> history = new ArrayList<>();
+
+      String csv = Downloader.download(s);
+
+      CSVParser parser;
+      try {
+        parser = CSVParser.parse(csv, CSVFormat.RFC4180.withNullString("N/A").withHeader());
+      } catch (IOException ex) {
+        return new String[]{"Yahoo Finance gave a malformed response."};
+      }
+
+      for (CSVRecord record : parser) {
+        if (record.getRecordNumber() > days) {
+          break;
+        }
+
+        // Only care about its close price.
+        HistoricalData hist = new HistoricalData();
+        hist.high = Double.parseDouble(record.get("High"));
+        hist.low = Double.parseDouble(record.get("Low"));
+        hist.close = Double.parseDouble(record.get("Close"));
+        history.add(hist);
+      }
+
+      // Rearrange so we present from the oldest data to the newest.
+      Collections.reverse(history);
+
+      // Stringify each data point.
+      Double last_close = null;
+      for (HistoricalData entry : history) {
+        String arrow;
+        if (last_close != null) {
+          arrow = StringUtils.arrow(last_close, entry.close);
+        } else {
+          arrow = "";
+        }
+        closes.add(String.format("%.3f %.3f %.3f%s", entry.low, entry.high, entry.close, arrow));
+
+        last_close = entry.close;
+      }
+
+      messages.add(String.format("%d days of %s (low/high/close), oldest first:", days, tickers.get(0)));
+      for (int i = 0; i < closes.size(); i++) {
+        messages.add(closes.get(i));
+      }
     }
     return messages.toArray(new String[messages.size()]);
   }
