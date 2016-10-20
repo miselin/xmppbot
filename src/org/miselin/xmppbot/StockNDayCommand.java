@@ -111,14 +111,12 @@ public class StockNDayCommand extends StockCommand {
       last_close = entry.close;
     }
 
-    String message = String.format("%d days of %s (low/high/close): ", days, tickers.get(0));
+    List<String> messages = new ArrayList<>();
+    messages.add(String.format("%d days of %s (low/high/close), oldest first:", days, tickers.get(0)));
     for (int i = 0; i < closes.size(); i++) {
-      message += closes.get(i);
-      if ((i + 1) < closes.size()) {
-        message += ", ";
-      }
+      messages.add(closes.get(i));
     }
-    return new String[]{message};
+    return messages.toArray(new String[messages.size()]);
   }
 
 }
