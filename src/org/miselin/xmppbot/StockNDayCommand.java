@@ -77,6 +77,11 @@ public class StockNDayCommand extends StockCommand {
 
       String csv = Downloader.download(s);
 
+      if (csv == null) {
+        // TODO(miselin): uh, probably should log or tell the user or something?
+        continue;
+      }
+
       CSVParser parser;
       try {
         parser = CSVParser.parse(csv, CSVFormat.RFC4180.withNullString("N/A").withHeader());
