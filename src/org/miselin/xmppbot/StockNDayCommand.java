@@ -119,7 +119,7 @@ public class StockNDayCommand extends StockCommand {
         last_close = entry.close;
       }
 
-      messages.add(String.format("%d days of %s (low/high/close), oldest first:", days, tickers.get(0)));
+      messages.add(String.format("%d days of %s (low/high/close), oldest first:", days, ticker));
       for (int i = 0; i < closes.size(); i++) {
         messages.add(closes.get(i));
       }
