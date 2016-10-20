@@ -50,16 +50,6 @@ public class StockNDayCommand extends StockCommand {
         continue;
       }
 
-      // Allow overriding # of days for history.
-      // TODO(miselin): extend this to support different granularities e.g. weekly, monthly.
-      if (entry.contains("*")) {
-        String[] split = entry.split("\\*");
-        entry = split[0];
-        days = Integer.parseInt(split[1]);
-      }
-
-      // Convert to the right type of ticker for our use (e.g. ASX)
-      entry = fixTicker(entry);
       tickers.add(entry);
     }
 
@@ -70,6 +60,17 @@ public class StockNDayCommand extends StockCommand {
     List<String> messages = new ArrayList<>();
 
     for (String ticker : tickers) {
+      // Allow overriding # of days for history.
+      // TODO(miselin): extend this to support different granularities e.g. weekly, monthly.
+      if (ticker.contains("*")) {
+        String[] split = ticker.split("\\*");
+        ticker = split[0];
+        days = Integer.parseInt(split[1]);
+      }
+
+      // Convert to the right type of ticker for our use (e.g. ASX)
+      ticker = fixTicker(ticker);
+
       String s = "http://ichart.finance.yahoo.com/table.csv?s=" + ticker;
 
       List<String> closes = new ArrayList<>();
