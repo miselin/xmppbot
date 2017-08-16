@@ -210,6 +210,7 @@ public class XMPPBot implements IListener<MessageReceivedEvent> {
         commands_.add(new PyDocCommand());
         commands_.add(new DiceCommand());
         commands_.add(new ForexCommand());
+        commands_.add(new SpotifyCommand());
         commands_.add(new StockCommand());
         commands_.add(new StockNDayCommand());
         commands_.add(new ShutdownCommand(b));
