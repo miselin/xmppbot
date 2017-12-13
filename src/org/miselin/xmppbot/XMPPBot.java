@@ -9,28 +9,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.MessageListener;
-import org.jivesoftware.smack.ReconnectionManager;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.chat.Chat;
-import org.jivesoftware.smack.chat.ChatManager;
-import org.jivesoftware.smack.chat.ChatManagerListener;
-import org.jivesoftware.smack.chat.ChatMessageListener;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
-import org.jivesoftware.smackx.muc.DiscussionHistory;
-import org.jivesoftware.smackx.muc.MultiUserChat;
-import org.jivesoftware.smackx.muc.MultiUserChatManager;
-import org.jxmpp.util.XmppStringUtils;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.api.events.IListener;
-import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
-import sx.blah.discord.handle.impl.events.ReadyEvent;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.util.DiscordException;
 
 /**
@@ -51,9 +33,8 @@ public class XMPPBot implements IListener<MessageReceivedEvent> {
      *
      * @param token Discord token
      * @param username Username.
-     * @throws SmackException thrown on Smack API errors.
      * @throws IOException thrown on I/O errors e.g. with connecting.
-     * @throws XMPPException thrown on XMPP protocol errors.
+     * @throws DiscordException thrown on Discord errors.
      */
     private void login(String token, String username) throws IOException, DiscordException {
         if (null != connection_) {
@@ -99,18 +80,6 @@ public class XMPPBot implements IListener<MessageReceivedEvent> {
             default:
                 return false;
         }
-    }
-
-    /**
-     * Checks that the given user has admin rights.
-     *
-     * @param jid the user's JID (e.g. foo@bar.net/resource)
-     * @return true if the user is an admin, false otherwise.
-     */
-    public boolean isAdmin(String jid) {
-        String resource = XmppStringUtils.parseResource(jid);
-        String localpart = XmppStringUtils.parseLocalpart(jid);
-        return isAdminUser(resource) || isAdminUser(localpart);
     }
 
     /**
