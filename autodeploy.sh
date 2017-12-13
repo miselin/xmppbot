@@ -11,8 +11,6 @@ if [[ "${reslog}" != "" ]] ; then
   NEW=$(sha256sum target/xmppbot-1.0-1-jar-with-dependencies.jar)
 
   if [[ "$ORIG" != "$NEW" ]]; then
-    # Restart daemon
-    screen -XS wfabot quit || echo "doesn't exist yet"
-    screen -dmS wfabot java -jar $PWD/target/xmppbot-1.0-1-jar-with-dependencies.jar $PWD/config.properties
+    bash ./run.sh
   fi
 fi
