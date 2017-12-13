@@ -5,3 +5,6 @@
 config.properties
 manifest.mf
 build.xml
+
+*.sublime-workspace
+local.db
