@@ -111,7 +111,7 @@ public class DiceCommand implements BaseCommand {
     class RollComparator implements Comparator<Roll> {
 
         public int compare(Roll s1, Roll s2) {
-            return Integer.compare(s2.roll, s1.roll);
+            return Integer.compare(s1.roll, s2.roll);
         }
     }
 
@@ -233,7 +233,7 @@ public class DiceCommand implements BaseCommand {
             }
 
             if (discarded.size() > 0) {
-                response += " discarded ";
+                response += " discarded";
                 for (Roll roll : discarded) {
                     response += String.format(" d%d=%d", roll.die.getSides(), roll.roll);
                 }
