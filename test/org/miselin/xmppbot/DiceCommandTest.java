@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Random;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.mockito.Mockito;
 import org.miselin.xmppbot.DiceCommand.Dice;
 import org.miselin.xmppbot.DiceCommand.DiceSet;
 
@@ -50,6 +49,19 @@ public class DiceCommandTest {
         assertArrayEquals("parsing MdN formats works", expected, dice_array);
     }
 
+    private class FakeRandom extends Random {
+
+        @Override
+        public int nextInt() {
+            return 2;
+        }
+
+        @Override
+        public int nextInt(int bound) {
+            return 2;
+        }
+    }
+
     /**
      * Test of handle method, of class DiceCommand.
      */
@@ -57,11 +69,7 @@ public class DiceCommandTest {
     public void testHandle() {
         // We have to adjust rolls because bounds are zero-inclusive, so in this case returning 2 gives
         // dice rolls of 3.
-        Random rand = Mockito.mock(Random.class);
-        Mockito.when(rand.nextInt(Mockito.isA(Integer.class))).thenReturn(2);
-
-        // Build the command with the mocked SecureRandom
-        DiceCommand cmd = new DiceCommand(rand);
+        DiceCommand cmd = new DiceCommand(new FakeRandom());
 
         String message = "!roll d 1d6 1d20";
         String[] expResult = new String[]{"rolled 3 dice sets:\nset #1 keep 1: d6=3\nset #2 keep 1: d6=3\nset #3 keep 1: d20=3"};
