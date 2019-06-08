@@ -6,11 +6,10 @@
 package org.miselin.xmppbot;
 
 import org.miselin.xmppbot.DiceCommand;
-import java.security.SecureRandom;
 import java.util.List;
+import java.util.Random;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Before;
 import org.mockito.Mockito;
 import org.miselin.xmppbot.DiceCommand.Dice;
 import org.miselin.xmppbot.DiceCommand.DiceSet;
@@ -58,7 +57,7 @@ public class DiceCommandTest {
     public void testHandle() {
         // We have to adjust rolls because bounds are zero-inclusive, so in this case returning 2 gives
         // dice rolls of 3.
-        SecureRandom rand = Mockito.mock(SecureRandom.class);
+        Random rand = Mockito.mock(Random.class);
         Mockito.when(rand.nextInt(Mockito.isA(Integer.class))).thenReturn(2);
 
         // Build the command with the mocked SecureRandom

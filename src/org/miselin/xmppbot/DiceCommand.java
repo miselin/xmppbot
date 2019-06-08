@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +23,7 @@ import java.util.regex.Pattern;
  */
 public class DiceCommand implements BaseCommand {
 
-    private static SecureRandom random_ = new SecureRandom();
+    private static Random random_ = new SecureRandom();
     private static final Pattern mdn_re_ = Pattern.compile("(?<count>\\d+)??d(?<sides>\\d+)??(k(?<keep>\\d+)??)?");
 
     @Override
@@ -150,7 +151,7 @@ public class DiceCommand implements BaseCommand {
         // Default random_ is OK.
     }
 
-    public DiceCommand(SecureRandom override) {
+    public DiceCommand(Random override) {
         super();
         random_ = override;
     }
