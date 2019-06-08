@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ORIG=$(sha256sum target/xmppbot-1.0-1-jar-with-dependencies.jar)
+ORIG=$(sha256sum target/xmppbot-1.1-1-jar-with-dependencies.jar)
 
 # Make sure the bot is running before we rebuild it
 screen -XS wfabot true || bash ./run.sh
@@ -11,7 +11,7 @@ if [[ "${reslog}" != "" ]] ; then
   git pull
 
   mvn clean verify
-  NEW=$(sha256sum target/xmppbot-1.0-1-jar-with-dependencies.jar)
+  NEW=$(sha256sum target/xmppbot-1.1-1-jar-with-dependencies.jar)
 
   if [[ "$ORIG" != "$NEW" ]]; then
     bash ./run.sh
