@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: skynet
-        image: miselin/skynet
+        image: miselin/xmppbot
         env:
         - name: DISCORD_TOKEN
           valueFrom:
