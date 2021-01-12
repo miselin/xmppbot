@@ -16,8 +16,9 @@ spec:
       containers:
       - name: skynet
         image: miselin/skynet
-      - name: DISCORD_TOKEN
-        valueFrom:
-          secretKeyRef:
-            name: discord
-            key: token
+        env:
+        - name: DISCORD_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: discord
+              key: token
