@@ -1,8 +1,15 @@
-image: maven:3.6.3-jdk-11
+image: maven:latest
 
 stages:
   - build
+  - test
 
 build:
   stage: build
-  script: mvn clean verify
+  script:
+    - mvn compile
+
+test:
+  stage: test
+  script:
+    - mvn test
