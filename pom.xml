@@ -182,7 +182,7 @@
                        <version>2.7.1</version>
                        <configuration>
                           <allowInsecureRegistries>true</allowInsecureRegistries>
-                          <to>cr.goldborneroad.dev/miselin/xmppbot</to>
+                          <to>cr.l.theiselins.net/miselin/xmppbot</to>
                        </configuration>
                     </plugin>
                 </plugins>
