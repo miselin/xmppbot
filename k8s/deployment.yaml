@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skynet-deployment
+  labels:
+    app: skynet
+spec:
+  selector:
+    matchLabels:
+      app: skynet
+  template:
+    metadata:
+      labels:
+        app: skynet
+    spec:
+      containers:
+      - name: skynet
+        image: miselin/skynet
