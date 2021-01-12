@@ -193,6 +193,15 @@ public class XMPPBot implements IListener<MessageReceivedEvent> {
         }
         Properties props = b.getProperties(props_path);
 
+        if (!props.containsKey("token")) {
+            // Token not in the config file.
+            // Try and read the token from the environment.
+            String token = System.getenv("DISCORD_TOKEN");
+            if (token != null) {
+                props.setProperty("token", token);
+            }
+        }
+
         // Log in and immediately join the main multi-chat.
         b.login(props.getProperty("token", ""),
                 props.getProperty("username", "skynet"));
