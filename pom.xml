@@ -165,6 +165,15 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+               <groupId>com.google.cloud.tools</groupId>
+               <artifactId>jib-maven-plugin</artifactId>
+               <version>2.4.0</version>
+               <configuration>
+                  <allowInsecureRegistries>true</allowInsecureRegistries>
+                  <to>cr.l.theiselins.net:5000/miselin/xmppbot</to>
+               </configuration>
+            </plugin>
         </plugins>
     </build>
 
