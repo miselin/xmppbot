@@ -3,6 +3,8 @@ image: maven:latest
 stages:
   - build
   - test
+  - image-build
+  - deploy-prod
 
 build:
   stage: build
@@ -13,3 +15,17 @@ test:
   stage: test
   script:
     - mvn test
+
+image-build:
+  stage: image-build
+  script:
+    - mvn -s .m2/settings.xml -P jib compile jib:build
+
+deploy-prod:
+  image: bitnami/kubectl:latest
+  stage: deploy-prod
+  only:
+    - master
+  when: manual
+  script:
+    - kubectl apply -f k8s/deployment.yaml -n prod
