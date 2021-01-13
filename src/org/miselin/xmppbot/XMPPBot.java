@@ -261,7 +261,7 @@ public class XMPPBot {
             String content = msg.getContent();
             String from = msg.getAuthor().get().getUsername();
             String[] responses = getResponses(from, content);
-            if (null != responses) {
+            if (null != responses && responses.length > 0) {
                 boolean first = true;
                 String final_response = msg.getAuthor().get().getMention() + " ";
                 for (String response : responses) {
