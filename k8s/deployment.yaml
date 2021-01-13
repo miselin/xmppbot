@@ -15,10 +15,12 @@ spec:
     spec:
       containers:
       - name: skynet
-        image: miselin/xmppbot
+        image: cr.l.theiselins.net/miselin/xmppbot
         env:
         - name: DISCORD_TOKEN
           valueFrom:
             secretKeyRef:
               name: discord
               key: token
+      imagePullSecrets:
+      - name: regcred
