@@ -9,20 +9,24 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sx.blah.discord.api.ClientBuilder;
-import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.api.events.IListener;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
-import sx.blah.discord.util.DiscordException;
+import discord4j.core.DiscordClientBuilder;
+import discord4j.core.GatewayDiscordClient;
+import discord4j.core.event.domain.lifecycle.ReadyEvent;
+import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.entity.Message;
+import discord4j.core.object.entity.User;
+import discord4j.core.object.entity.channel.GuildChannel;
+import discord4j.core.object.entity.channel.TextChannel;
+import reactor.core.publisher.Mono;
 
 /**
  * The main entry point and state of the bot's connection is managed here.
  *
  * @author Matthew Iselin <matthew@theiselins.net>
  */
-public class XMPPBot implements IListener<MessageReceivedEvent> {
+public class XMPPBot {
 
-    private IDiscordClient connection_ = null;
+    private GatewayDiscordClient connection_ = null;
     private boolean active_ = false;
     private String username_ = null;
     private String jid_ = null;
@@ -36,19 +40,26 @@ public class XMPPBot implements IListener<MessageReceivedEvent> {
      * @throws IOException thrown on I/O errors e.g. with connecting.
      * @throws DiscordException thrown on Discord errors.
      */
-    private void login(String token, String username) throws IOException, DiscordException {
+    private void login(String token, String username) throws IOException {
         if (null != connection_) {
             System.err.println("Already connected!");
             return;
         }
 
         System.err.println("Logging in with token " + token + ".");
-        ClientBuilder clientBuilder = new ClientBuilder();
-        clientBuilder.withToken(token);
 
-        connection_ = clientBuilder.login();
-        connection_.getDispatcher().registerListener(this);
+        GatewayDiscordClient client = DiscordClientBuilder.create(token)
+                .build()
+                .login()
+                .block();
 
+        client.getEventDispatcher().on(MessageCreateEvent.class)
+                .map(MessageCreateEvent::getMessage)
+                .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
+                .flatMap(message -> handle(message))
+                .subscribe();
+
+        connection_ = client;
         active_ = true;
     }
 
@@ -60,7 +71,7 @@ public class XMPPBot implements IListener<MessageReceivedEvent> {
             return;
         }
 
-        connection_.logout();
+        connection_.logout().block();
         connection_ = null;
         active_ = false;
     }
@@ -136,6 +147,12 @@ public class XMPPBot implements IListener<MessageReceivedEvent> {
         return active_ && (null != connection_);
     }
 
+    public void waitForDisconnect() {
+        if (null != connection_) {
+            connection_.onDisconnect().block();
+        }
+    }
+
     /**
      * Sets the active state to request a termination without immediate
      * disconnect.
@@ -207,21 +224,18 @@ public class XMPPBot implements IListener<MessageReceivedEvent> {
                 props.getProperty("username", "skynet"));
 
         // Stay alive until we're asked to terminate.
-        while (b.isActive()) {
-            Thread.sleep(1000);
-        }
-
-        // Clean termination.
-        b.disconnect();
+        b.waitForDisconnect();
     }
 
-    @Override
-    public void handle(MessageReceivedEvent event) {
+    public Mono<Message> handle(Message msg) {
         if (!isActive()) {
-            return;
+            return null;
         }
 
-        if (event.getChannel().isPrivate()) {
+        TextChannel channel = msg.getChannel().ofType(TextChannel.class).block();
+
+        // TODO: figure out private messages in Discord4J 3.x
+        if (null == channel) {
 
             /*
             // Private message. But only care if it's to us directly.
@@ -243,20 +257,26 @@ public class XMPPBot implements IListener<MessageReceivedEvent> {
              */
             // TODO: IMPLEMENT ME
         } else {
-            String from = event.getAuthor().getName();
-            String[] responses = getResponses(from, event.getMessage().getContent());
+            String from = msg.getAuthor().get().getUsername();
+            String[] responses = getResponses(from, msg.getContent());
             if (null != responses) {
-                try {
-                    for (String response : responses) {
-                        event.getChannel().sendMessage(event.getAuthor().mention() + " " + response);
-
+                boolean first = true;
+                String final_response = msg.getAuthor().get().getMention() + " ";
+                for (String response : responses) {
+                    if (!first) {
+                        final_response += "\n";
+                    } else {
+                        first = false;
                     }
-                } catch (DiscordException ex) {
-                    Logger.getLogger(XMPPBot.class
-                            .getName()).log(Level.SEVERE, null, ex);
+
+                    final_response += response;
                 }
+
+                return channel.createMessage(final_response);
             }
         }
+
+        return null;
     }
 
 }
