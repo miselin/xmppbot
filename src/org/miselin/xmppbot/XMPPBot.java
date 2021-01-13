@@ -56,6 +56,7 @@ public class XMPPBot {
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .map(MessageCreateEvent::getMessage)
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
+                .filter(message -> message.getContent().startsWith("!"))
                 .flatMap(message -> handle(message))
                 .subscribe();
 
@@ -257,8 +258,9 @@ public class XMPPBot {
              */
             // TODO: IMPLEMENT ME
         } else {
+            String content = msg.getContent();
             String from = msg.getAuthor().get().getUsername();
-            String[] responses = getResponses(from, msg.getContent());
+            String[] responses = getResponses(from, content);
             if (null != responses) {
                 boolean first = true;
                 String final_response = msg.getAuthor().get().getMention() + " ";
